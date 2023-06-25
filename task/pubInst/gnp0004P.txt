@@ -1,0 +1,6 @@
+# Undirected GNP random graph, edge prob. 0.250, seed 17
+n = 4
+0 : 2w2752 3w5370
+1 : 3w1214
+2 : 0w2752
+3 : 0w5370 1w1214

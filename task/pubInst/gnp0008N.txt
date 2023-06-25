@@ -1,0 +1,10 @@
+# Undirected GNP random graph, edge prob. 0.250, seed 22
+n = 8
+0 : 1w0 7w41
+1 : 0w0 4w815 5w83 6w480 7w309
+2 : 5w198
+3 : 6w948
+4 : 1w815 6w368
+5 : 1w83 2w198
+6 : 1w480 3w948 4w368
+7 : 0w41 1w309

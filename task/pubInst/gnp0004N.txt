@@ -1,0 +1,6 @@
+# Undirected GNP random graph, edge prob. 0.250, seed 21
+n = 4
+0 : 1w8
+1 : 0w8 3w256
+2 : 
+3 : 1w256

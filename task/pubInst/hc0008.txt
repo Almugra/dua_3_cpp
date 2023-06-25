@@ -1,0 +1,10 @@
+# Directed Hypercube random graph, dimension 3, seed 29
+n = 8
+0 : 1w86 2w31 4w41
+1 : 0w52 5w62 6w77
+2 : 0w29 3w91 6w34
+3 : 2w44 4w85 7w42
+4 : 0w26 3w68 5w74
+5 : 1w29 4w85 7w12
+6 : 1w76 2w98 7w62
+7 : 3w43 5w80 6w2
