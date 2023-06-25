@@ -15,6 +15,55 @@ std::vector<std::string> splitWhitespace(std::string s) {
                                   std::istream_iterator<std::string>{}};
 }
 
+void setWeights(std::vector<std::vector<int>> &v, int n,
+                std::basic_fstream<char> &input) {
+  for (std::string line; std::getline(input, line);) {
+    std::vector<std::string> line_split = splitWhitespace(line);
+    int nr = std::stoi(line_split[0]);
+
+    if (line_split.size() > 2) {
+      auto adj_list =
+          std::vector<std::string>(line_split.begin() + 2, line_split.end());
+
+      for (std::string adj : adj_list) {
+        auto w_pos = adj.find('w');
+        auto node = std::stoi(adj.substr(0, w_pos));
+        auto weight = std::stoi(adj.substr(w_pos + 1, adj.size()));
+        v[nr][node] = weight;
+      }
+    }
+  }
+
+  for (int i = 0; i < n; i++) {
+    v[i][i] = 0;
+  }
+}
+
+void floydWarshall(std::vector<std::vector<int>> &matrix, int n) {
+  for (int k = 0; k < n; k++) {
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (matrix[i][k] != INF && matrix[k][j] != INF) {
+          matrix[i][j] = std::min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+        }
+      }
+    }
+  }
+}
+
+void writeMatrix(std::vector<std::vector<int>> matrix, int n) {
+  for (int x = 0; x < n; x++) {
+    std::string line;
+    for (int y = 0; y < n; y++) {
+      if (matrix[x][y] != INF) {
+        line += std::to_string(y) + 'w' + std::to_string(matrix[x][y]) + ' ';
+      }
+    }
+    std::cout << x << " : " << line.substr(0, line.size() - 1) << std::endl;
+    line.clear();
+  }
+}
+
 int main(int argc, char *argv[]) {
   if (argc != 2) {
     throw std::invalid_argument("one argument needed");
@@ -36,47 +85,11 @@ int main(int argc, char *argv[]) {
   auto matrix = std::vector<std::vector<int>>(
       num_of_nodes, std::vector<int>(num_of_nodes, INF));
 
-  for (std::string line; std::getline(input, line);) {
-    std::vector<std::string> line_split = splitWhitespace(line);
-    int nr = std::stoi(line_split[0]);
+  setWeights(matrix, num_of_nodes, input);
 
-    if (line_split.size() > 2) {
-      auto adj_list =
-          std::vector<std::string>(line_split.begin() + 2, line_split.end());
+  floydWarshall(matrix, num_of_nodes);
 
-      for (std::string adj : adj_list) {
-        auto w_pos = adj.find('w');
-        auto node = std::stoi(adj.substr(0, w_pos));
-        auto weight = std::stoi(adj.substr(w_pos + 1, adj.size()));
-        matrix[nr][node] = weight;
-      }
-    }
-  }
-
-  for (int i = 0; i < num_of_nodes; i++) {
-    matrix[i][i] = 0;
-  }
-
-  for (int k = 0; k < num_of_nodes; k++) {
-    for (int i = 0; i < num_of_nodes; i++) {
-      for (int j = 0; j < num_of_nodes; j++) {
-        if (matrix[i][k] != INF && matrix[k][j] != INF) {
-          matrix[i][j] = std::min(matrix[i][j], matrix[i][k] + matrix[k][j]);
-        }
-      }
-    }
-  }
-
-  for (int x = 0; x < num_of_nodes; x++) {
-    std::string line;
-    for (int y = 0; y < num_of_nodes; y++) {
-      if (matrix[x][y] != INF) {
-        line += std::to_string(y) + 'w' + std::to_string(matrix[x][y]) + ' ';
-      }
-    }
-    std::cout << x << " : " << line.substr(0, line.size() - 1) << std::endl;
-    line.clear();
-  }
+  writeMatrix(matrix, num_of_nodes);
 
   return 0;
 }
