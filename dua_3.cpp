@@ -19,13 +19,12 @@ vector<string> splitWhitespace(string s) {
 
 void setWeights(vector<vector<int>> &v, int n, basic_fstream<char> &input) {
   for (string line; getline(input, line);) {
-    vector<string> line_split = splitWhitespace(line);
-    int nr = stoi(line_split[0]);
+    vector<string> parts = splitWhitespace(line);
+    int nr = stoi(parts[0]);
 
-    if (line_split.size() > 2) {
-      auto adj_list = vector<string>(line_split.begin() + 2, line_split.end());
-
-      for (string adj : adj_list) {
+    if (parts.size() > 2) {
+      for (size_t i = 2; i < parts.size(); i++) {
+        auto adj = parts[i];
         auto w_pos = adj.find('w');
         auto node = stoi(adj.substr(0, w_pos));
         auto weight = stoi(adj.substr(w_pos + 1, adj.size()));
